@@ -1,43 +1,72 @@
 //Using IIFE
-function({
-  'using strict';
-  angular.module('LaunchCheck', [])
-  .controller('LanuchCheckController',LaunchCheckController);
-  LaunchCheckController.$inject = ['$scope'];
+(function() {
+  'use strict';
+  angular
+    .module('LunchCheck', [])
+    .controller('LunchCheckController', LunchCheckController);
 
-function LaunchCheckController($scope){
-  $scope.msg="";
-  $scope.textStyle=();
-  $scope.borderStyle=();
+  LunchCheckController.$inject = ['$scope'];
+  function LunchCheckController($scope) {
+    $scope.dishes = "";
+    $scope.inputClass = "";
+    $scope.message = "";
+    $scope.messageClass = "text-success";
 
-  $scope.displayMsg = function(){
-    var itemCount = calculateItems($scope.items);
-    $scope.textStyle = {"color":"green"};
-    $scope.borderStyle = {"border":"solid green"};
+    $scope.check = function() {
+      $scope.message = messageForDishes($scope.dishes);
+      $scope.messageClass = classForMessage($scope.dishes);
+      $scope.inputClass = classForInput($scope.dishes);
+    };
 
-    if(itemCount==0){
-      $scope.msg="Please enter data first";
-      $scope.textStyle = {"color":"red"};
-      $scope.borderStyle = {"border":"solid red"};
-    }else if(itemCount<=3){
-      $scope.msg="Enjoy !";
-    }else{
-      $scope.msg="Too much !";
+    $scope.reset = function() {
+      $scope.inputClass = "";
+      $scope.message = "";
+      $scope.messageClass = "text-success";
     }
-  };
-  function calculateItems(string){
-    var separator = ',';
-    var itemCount = 0;
-    if(typeof string!='undefined' && string!=''){
-      var items = string.split(separator);
-      for(var i=0;i<items.length;i++){
-        if(items[i]!=''){
-          itemCount++;
-        }
+  }
+
+  function messageForDishes(dishes) {
+    if (dishes.trim() == "") {
+      return "Please enter data first";
+    }
+    else if (numberOfDishes(dishes) <= 3) {
+      return "Enjoy!";
+    }
+    else {
+      return "Too much!";
+    }
+  }
+
+  function classForMessage(dishes) {
+    if (dishes.trim() == "") {
+      return "text-danger";
+    }
+    else {
+      return "text-success";
+    }
+  }
+
+  function classForInput(dishes) {
+    if (dishes.trim() == "") {
+      return "has-error";
+    }
+    else {
+      return "has-success";
+    }
+  }
+
+  function numberOfDishes(dishes) {
+    var items = dishes.split(",");
+    var numberOfItems = 0;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].trim() != "") {
+        numberOfItems ++;
       }
     }
-    return itemCount;
+    return numberOfItems;
   }
+}
+)();
 }
 
 })();
