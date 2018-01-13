@@ -15,7 +15,7 @@ function LaunchCheckController($scope){
     $scope.textStyle = {"color":"green"};
     $scope.borderStyle = {"border":"solid green"};
 
-    if(itemCount===0){
+    if(itemCount==0){
       $scope.msg="Please enter data first";
       $scope.textStyle = {"color":"red"};
       $scope.borderStyle = {"border":"solid red"};
